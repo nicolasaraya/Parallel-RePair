@@ -36,13 +36,14 @@ void RepairParallelInd(vector<int>* datos, int nThreads){
     vector<DList*> res(nThreads, new DList());
     
     omp_set_num_threads(nThreads);
-    //#pragma omp parallel for
+    #pragma omp parallel for
     for(int i = 0; i < nThreads; i++){
         Repair* r = new Repair(&subDatos.at(i));
         r->cambiar();
         //cout << "Thread: " << i << endl; 
         //r->prints();
         res.at(i) = r->getSeq();
+        //delete(r);
     }
 
     cout << "*****" << endl; 
@@ -55,9 +56,9 @@ void RepairParallelInd(vector<int>* datos, int nThreads){
     Repair* r = new Repair(res.at(0));
     r->cambiar();
     r->prints();
+    delete(r);
 
-
-
+    
 
 	return;
 }

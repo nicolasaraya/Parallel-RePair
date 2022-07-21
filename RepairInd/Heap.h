@@ -31,6 +31,7 @@ class Heap{
         NodoHeap* top();
         bool empty();
         int size();
+        void clear();
         
 
 };

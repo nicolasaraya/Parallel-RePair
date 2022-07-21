@@ -1,6 +1,8 @@
 #include "Heap.h"
 #include<vector>
 #include <iostream>
+#include <unistd.h>
+
 
 using namespace std;
 
@@ -84,4 +86,27 @@ void Heap::prints(){
         cout<<"("<<a.first<<","<<a.second<<") "<<f<<endl;
     }
     cout<<endl;
+}
+
+void Heap::clear(){
+    for(int i = arr.size()-1; i>10 ; i--){
+        NodoHeap* aux = arr.at(i);
+        if(aux->getFrecuencia()<=1){
+            //cout << "si=(" << aux->getPar().first << "," << aux->getPar().second << "): " << aux->getFrecuencia() << endl;
+            pair<int,int> p = aux->getPar();
+            Data* d = mp->at({p.first, p.second});
+            delete(d);
+            mp->erase({p.first, p.second});
+            arr.pop_back();
+            delete(aux);
+            //sleep(2);
+        }
+        else{
+            break;
+        }
+    }
+
+
+
+
 }

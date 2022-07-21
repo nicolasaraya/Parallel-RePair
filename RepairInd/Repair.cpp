@@ -71,11 +71,16 @@ void Repair::cambiar(){
     if(seq->size()<4) return;
     mayor++;
     pair <int,int> dato = hp->top()->getPar();
+    int count = 0;
     while(1){
         if(hp->top()->getFrecuencia()<=1 || seq->size()<4)break;
         buscaOcurrencias(mp[dato]->PrimeraOc);    
         dato = hp->top()->getPar();
-        mayor++;  
+        mayor++;
+        count++;
+        if(count%5 == 0){
+            //hp->clear();
+        }
     } 
 }
 
@@ -104,6 +109,11 @@ void Repair::actualizaHeap(Nodo* parUno, Nodo* parDos){
     hp->verifyDown(mp[{a,b}]->posHeap); //reordena el heap
 }
 void Repair::insertarHeap(Nodo* NodoA, Nodo* NodoB){
+    if(NodoA == NULL || NodoB == NULL){
+        cout << "error" << endl;
+        return;
+    }
+
     int a = NodoA->getNum();
     int b = NodoB->getNum();
 
@@ -121,7 +131,6 @@ void Repair::insertarHeap(Nodo* NodoA, Nodo* NodoB){
         hp->verify(mp[{a, b}]->posHeap);
     }
     else{
-        
         NodoA->setOP(mp[{a,b}]->UltimaOc);
         NodoA->setOS(NULL);
         if(mp[{a, b}]->UltimaOc !=NULL) mp[{a, b}]->UltimaOc->setOS(NodoA); 
