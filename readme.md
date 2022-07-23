@@ -1,6 +1,6 @@
-# RePair
+# Parallel Repair
 
-**RePairInd:**
--Implementación de RePair secuencial y paralelo con estructuras de datos independientes para cada hebra
-**RePairShared:**
--Implementación de RePair en paralelo con estructuras de datos compartidas.
+**Usage:**
+- `chmod +x compila.sh` 
+- `./compila.sh`
+- `./a.out N M`, N = Number of Threads, M = Size of array. 
