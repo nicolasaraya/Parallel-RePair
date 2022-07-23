@@ -112,10 +112,12 @@ void Controller::Parallel(int n){
         Repair* r = new Repair(&subDatos.at(i), &key_output_par);
         r->cambiar();
         res.at(i) = r->getSeq();
+        delete(r);
     }
 
     for(int i = nThreads-1; i>0; i--){
         mergeDList(res.at(i-1), res.at(i));
+        delete(res.at(i));
         res.pop_back();
     }
 
