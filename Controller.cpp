@@ -29,7 +29,7 @@ void Controller::Sequential(){
         unsigned int parts = ( seqSize / maxSeq ) + 1;
         vector< vector<int> > subDatos(parts, vector<int>(0,0));
 
-        cout << parts << endl;
+        cout << "Sequential steps: " << parts << endl;
 
         long long int k = 0;
 
@@ -61,13 +61,16 @@ void Controller::Sequential(){
             mergeDList(res.at(i-1), res.at(i));
             res.pop_back();
         }
-        //r = new Repair(res.at(0), &key_output_seq);
-        //r->cambiar();
-        //resSeq = r->getSeq();
         resSeq = res.at(0);
-        //if(r != NULL) delete(r);
 
-
+        r = new Repair(res.at(0), &key_output_par);
+        while(r->Compressible()){
+            r->cambiar();
+            resSeq = r->getSeq();
+            if(r!=NULL) delete(r);
+            r = new Repair(resSeq, &key_output_par);
+        }
+        if(r!=NULL) delete(r);
     }
     else{
         Repair* r = new Repair(datos, &key_output_seq);
@@ -78,9 +81,8 @@ void Controller::Sequential(){
 }
 
 
-void Controller::Parallel(int n){
+void Controller::Parallel(int nThreads){
 	unsigned long long int nDatos = seqSize;
-    int nThreads = n;
     unsigned int nParts = nThreads;
 	unsigned int partSize = nDatos/nParts; 
     while(partSize > maxSeq){
@@ -89,8 +91,7 @@ void Controller::Parallel(int n){
     }
     vector< vector<int> > subDatos(nParts, vector<int>(0,0));
 
-	cout << "Tamaño de cada parte: " << partSize << endl;
-    cout << "Partes: " << nParts << endl;
+    cout << "Parallel parts: " << nParts  << ", size: " << partSize << endl;
 
     unsigned long long int k = 0;
     for(int i = 0; i < nParts; i++){
@@ -100,12 +101,10 @@ void Controller::Parallel(int n){
         }
     }
 
-    //cout << "k = " << k << endl;
     while(k!=datos->size()){ //relleno el ultimo con los datos que queden. 
         subDatos.at(nParts-1).push_back(datos->at(k));
         k++;
     }
-    
     
     vector<DList*> res(nParts, new DList());
     
@@ -121,43 +120,22 @@ void Controller::Parallel(int n){
         }
     }
 
-    /*
-    omp_set_num_threads(n);
-    #pragma omp parallel for
-    for(int i = 0; i < nThreads; i++){
-        Repair* r = new Repair(&subDatos.at(i), &key_output_par);
-        r->cambiar();
-        res.at(i) = r->getSeq();
-        delete(r);
-    }
-    #pragma omp barrier*/
-
     for(int i = nThreads-1; i>0; i--){
-        cout << "DList " << i << ":" ;
-        res.at(i)->prints();
-        cout << "*****" << endl;
         mergeDList(res.at(i-1), res.at(i));
-        //delete(res.at(i));
         res.pop_back();
     }
-    cout << "DList 0" << ":" ;
-    res.at(0)->prints();
-    cout << "*****" << endl;
 
     Repair* r = NULL;
     r = new Repair(res.at(0), &key_output_par);
-    if(r->Compressible()) r->cambiar();
-    resSeq = r->getSeq();
+    while(r->Compressible()){
+        r->cambiar();
+        resSeq = r->getSeq();
+        if(r!=NULL) delete(r);
+        r = new Repair(resSeq, &key_output_par);
+    }
     if(r!=NULL) delete(r);
-
-    r = new Repair(resSeq, &key_output_par);
-    if(r->Compressible()) r->cambiar();
-    resSeq = r->getSeq();
-    //resSeq = res.at(0);
-    if(r!=NULL) delete(r);
-	return;
     
-
+	return;
 
 }
 
