@@ -75,5 +75,6 @@
         "random": "cpp",
         "string_view": "cpp",
         "fstream": "cpp"
-    }
+    },
+    "C_Cpp.errorSquiggles": "Enabled"
 }
