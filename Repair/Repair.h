@@ -31,6 +31,7 @@ class Repair{
         void prints();
         void crearSeq(vector<int>* datos); 
         DList* getSeq();
+        bool Compressible();
 };
 
 

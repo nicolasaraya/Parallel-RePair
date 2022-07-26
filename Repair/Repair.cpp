@@ -25,6 +25,11 @@ Repair::~Repair(){
     mp.clear();
 }
 
+bool Repair::Compressible(){
+    if(hp->top()==NULL) return false; 
+    return !(hp->top()->getFrecuencia()<=1 || seq->size()<4);
+}
+
 void Repair::crearSeq(vector<int>* datos){
     for(auto i : *datos) seq->insertEnd(i);
 }
@@ -73,24 +78,13 @@ void Repair::cambiar(){
     if(seq->size()<4) return;
     mayor++;
     pair <int,int> dato = hp->top()->getPar();
-    int count = 0;
     while(1){
-        if(hp->top()->getFrecuencia()<=1 || seq->size()<4)break;
+        if(!Compressible())break;
         string out = to_string(dato.first) + " " + to_string(dato.second) + " = " + to_string(mayor) + "\n";
         *key_output << out;   
         buscaOcurrencias(mp[dato]->PrimeraOc);    
         dato = hp->top()->getPar();
         mayor++;
-        count++;
-        /*
-        if(count%1 == 0){
-            delete(hp);
-            mp.clear();
-            hp = new Heap(&mp);
-            crearHeap();
-
-        }*/
-        //break;
     } 
 }
 

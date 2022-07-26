@@ -6,8 +6,6 @@ Controller::Controller(vector<int>* datos){
     this->datos = datos;
     seqSize = datos->size();
     
-
-
     time_t rawtime; 
     struct tm* info; 
     time(&rawtime);
@@ -101,18 +99,18 @@ void Controller::Parallel(int n){
             k++;
         }
     }
+
     //cout << "k = " << k << endl;
     while(k!=datos->size()){ //relleno el ultimo con los datos que queden. 
         subDatos.at(nParts-1).push_back(datos->at(k));
         k++;
     }
     
+    
     vector<DList*> res(nParts, new DList());
     
-
-
     omp_set_num_threads(nThreads);
-    
+
     for(int i = 0; i < nParts; i+=nThreads){
         #pragma omp parallel for
         for(int j = i; j < nThreads; j++){
@@ -135,16 +133,16 @@ void Controller::Parallel(int n){
     #pragma omp barrier*/
 
     for(int i = nThreads-1; i>0; i--){
-        //cout << "DList " << i << ":" ;
-        //res.at(i)->prints();
-        //cout << "*****" << endl;
+        cout << "DList " << i << ":" ;
+        res.at(i)->prints();
+        cout << "*****" << endl;
         mergeDList(res.at(i-1), res.at(i));
         //delete(res.at(i));
         res.pop_back();
     }
-    //cout << "DList 0" << ":" ;
-    //res.at(0)->prints();
-    //cout << "*****" << endl;
+    cout << "DList 0" << ":" ;
+    res.at(0)->prints();
+    cout << "*****" << endl;
 
     Repair* r = NULL;
     r = new Repair(res.at(0), &key_output_par);

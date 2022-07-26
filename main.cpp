@@ -13,7 +13,7 @@ int main(int argc, char const *argv[]){
     }
 
     int nThreads = atoi(argv[1]);
-    long long int nDatos = atoi(argv[2]);
+    long long int nDatos = atoll(argv[2]);
 	
     if(nThreads > nDatos) nThreads = nDatos;
     cout << "Threads: "<< nThreads << ", Datos: "<< nDatos << endl; 
@@ -22,17 +22,18 @@ int main(int argc, char const *argv[]){
 	for(long long int i = 0; i<nDatos; i++)  datos.push_back(1);
 	cout << endl;
 	
-
+	DList* d1 = NULL;
+	DList* d2 = NULL;
 	Controller* contr = new Controller(&datos);
 	TIMERSTART(SEQ);
-	contr->Sequential();
-	DList* d1 = contr->getSeq();
+	//contr->Sequential();
+	//d1 = contr->getSeq();
 	TIMERSTOP(SEQ);
 
 
 	TIMERSTART(PAR);
 	contr->Parallel(nThreads);
-	DList* d2 = contr->getSeq();
+	d2 = contr->getSeq();
 	TIMERSTOP(PAR);
 
 	if(d1 != NULL) d1->prints();
@@ -40,8 +41,8 @@ int main(int argc, char const *argv[]){
 
 
 	delete(contr);
-	delete(d1);
-	delete(d2);
+	if(d1 != NULL) delete(d1);
+	if(d2 != NULL) delete(d2);
 
 	
 	
