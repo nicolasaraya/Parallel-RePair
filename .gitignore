@@ -1,4 +1,6 @@
-output/*
+output/compressed/*
+output/keys/*
+input/*
 out
 exec.out
 .vscode
