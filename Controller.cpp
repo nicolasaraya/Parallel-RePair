@@ -46,6 +46,7 @@ void Controller::Sequential(){
         vector<DList*> res(parts, new DList());
 
         for(int i = 0 ; i < parts; i++){
+            cout << "Step: " << i << endl;
             r = new Repair(&subDatos.at(i), &key_output_seq);
             r->cambiar();
             res.at(i) = r->getSeq();
@@ -64,12 +65,12 @@ void Controller::Sequential(){
         resSeq = res.at(0);
 
         r = new Repair(res.at(0), &key_output_par);
-        while(r->Compressible()){
+        //while(r->Compressible()){
             r->cambiar();
             resSeq = r->getSeq();
-            if(r!=NULL) delete(r);
-            r = new Repair(resSeq, &key_output_par);
-        }
+            //if(r!=NULL) delete(r);
+            //r = new Repair(resSeq, &key_output_par);
+        //}
         if(r!=NULL) delete(r);
     }
     else{

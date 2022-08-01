@@ -4,7 +4,7 @@
 
 using namespace std;
 
-const string pathIn = "./input/file.fna"; 
+const string pathIn = "./input/gato.fna"; 
 
 //A = 0
 //G = 6
@@ -47,6 +47,17 @@ void readFile(int nThreads, int option){
 	DList* d1 = NULL;
 	DList* d2 = NULL;
 
+	
+	if(option == 1 or option == 2){
+		Controller* contr = new Controller(&datos);
+		TIMERSTART(PAR);
+		contr->Parallel(nThreads);
+		d2 = contr->getSeq();
+		TIMERSTOP(PAR);
+
+		makeFile(d2, 1);
+	}
+	
 	if(option == 0 or option == 2){
 		Controller* contr = new Controller(&datos);
 		TIMERSTART(SEQ);
@@ -57,15 +68,7 @@ void readFile(int nThreads, int option){
 		makeFile(d1, 0);
 	}
 
-	if(option == 1 or option == 2){
-		Controller* contr = new Controller(&datos);
-		TIMERSTART(PAR);
-		contr->Parallel(nThreads);
-		d2 = contr->getSeq();
-		TIMERSTOP(PAR);
-
-		makeFile(d2, 1);
-	}
+	
 	
 	if(d1 != NULL) delete(d1);
 	if(d2 != NULL) delete(d2);
