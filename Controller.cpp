@@ -12,8 +12,8 @@ Controller::Controller(vector<int>* datos){
     info = localtime(&rawtime);
     string pathaux = "_" + to_string(info->tm_hour) + "_" + to_string(info->tm_min) + "_" + to_string(info->tm_sec) + "__"  + to_string(info->tm_year+1900) +  "-" + to_string(info->tm_mon) + "-" + to_string(info->tm_mday)  ;
 
-    key_output_seq.open("./output/keys_output_seq" + pathaux + ".txt", std::ofstream::out | std::ofstream::trunc); //limpia el contenido del fichero
-    key_output_par.open("./output/keys_output_par" + pathaux + ".txt", std::ofstream::out | std::ofstream::trunc); //limpia el contenido del fichero
+    key_output_seq.open("./output/keys/keys_output_seq" + pathaux + ".txt", std::ofstream::out | std::ofstream::trunc); //limpia el contenido del fichero
+    key_output_par.open("./output/keys/keys_output_par" + pathaux + ".txt", std::ofstream::out | std::ofstream::trunc); //limpia el contenido del fichero
     key_output_seq.clear();
     key_output_par.clear();
 }

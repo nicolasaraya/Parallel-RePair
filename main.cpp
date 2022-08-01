@@ -4,18 +4,76 @@
 
 using namespace std;
 
+const string pathIn = "./input/file.fna"; 
+
+//A = 0
+//G = 6
+//C = 2
+//T = 19
+
+
+void test(int nThreads, long long int nDatos, int option);
+void readFile(int nThreads, int option);
+void makeFile(DList* d, int id); 
+
 int main(int argc, char const *argv[]){
 	srand(time(NULL));
 	
-    if(argc != 4){
-        cout<<" uso: "<<argv[0]<<" \"n°hebras\" \"n°datos \" \"0:Seq 1:Parallel 2:Ambos\" " << endl;
-        return 1;
-    }
+    if(argc == 4) test(atoi(argv[1]), atoll(argv[2]), atoi(argv[3]));
+	if(argc == 3) readFile(atoi(argv[1]),atoi(argv[2]));
+    
+	return 0;
+}
 
-    int nThreads = atoi(argv[1]);
-    long long int nDatos = atoll(argv[2]);
-	int option = atoi(argv[3]);
+
+void readFile(int nThreads, int option){
+	ifstream input; 
+	input.open(pathIn);
+	string aux;
+
+	std::getline(input, aux); //trash
+	aux.clear();
+	vector<int> datos; 
+
+	while(std::getline(input,aux)){
+		for(auto i : aux){
+			datos.push_back(i - 65);
+		}
+		aux.clear();
+	}
+
+	input.close(); 
+
+	DList* d1 = NULL;
+	DList* d2 = NULL;
+
+	if(option == 0 or option == 2){
+		Controller* contr = new Controller(&datos);
+		TIMERSTART(SEQ);
+		contr->Sequential();
+		d1 = contr->getSeq();
+		TIMERSTOP(SEQ);
+
+		makeFile(d1, 0);
+	}
+
+	if(option == 1 or option == 2){
+		Controller* contr = new Controller(&datos);
+		TIMERSTART(PAR);
+		contr->Parallel(nThreads);
+		d2 = contr->getSeq();
+		TIMERSTOP(PAR);
+
+		makeFile(d2, 1);
+	}
 	
+	if(d1 != NULL) delete(d1);
+	if(d2 != NULL) delete(d2);
+
+
+}
+
+void test(int nThreads, long long int nDatos, int option){	
     if(nThreads > nDatos) nThreads = nDatos;
     cout << "Threads: "<< nThreads << ", Datos: "<< nDatos << endl; 
 
@@ -48,10 +106,26 @@ int main(int argc, char const *argv[]){
 	
 	if(d1 != NULL) delete(d1);
 	if(d2 != NULL) delete(d2);
-
-
-	return 0;
 }
 
 
+void makeFile(DList* d, int id){
+	ofstream out;
 
+	time_t rawtime; 
+    struct tm* info; 
+    time(&rawtime);
+    info = localtime(&rawtime);
+    string pathaux = "_" + to_string(info->tm_hour) + "_" + to_string(info->tm_min) + "_" + to_string(info->tm_sec) + "__"  + to_string(info->tm_year+1900) +  "-" + to_string(info->tm_mon) + "-" + to_string(info->tm_mday)  ;
+
+	if (id == 0) out.open("./output/compressed/SeqCompressedFile" + pathaux + ".fna", std::ofstream::out | std::ofstream::trunc);
+	if (id == 1) out.open("./output/compressed/ParallelCompressedFile" + pathaux + ".fna", std::ofstream::out | std::ofstream::trunc);
+
+	Iterator it = d->begin();
+	while(it.hasNext()){
+		out << it.next()->getNum();
+	}
+
+	out.close();
+
+}

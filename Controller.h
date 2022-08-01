@@ -3,6 +3,7 @@
 #include <iostream> 
 #include <fstream>
 #include <omp.h>
+#include <ctime> 
 #include "DList.h"
 #include "Repair.h"
 
