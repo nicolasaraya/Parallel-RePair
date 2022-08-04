@@ -2,20 +2,20 @@
 
 using namespace std;
 
-Controller::Controller(vector<int>* datos){
+Controller::Controller(vector<int>* datos, string info, int option){
     this->datos = datos;
     seqSize = datos->size();
+   
+    string pathaux = info; 
+    if(option == 0){
+        key_output_seq.open("./output/keys/keys_seq" + pathaux + ".txt", std::ofstream::out | std::ofstream::trunc); //limpia el contenido del fichero
+        key_output_seq.clear();
+    }
+    else{
+        key_output_par.open("./output/keys/keys_par" + pathaux + ".txt", std::ofstream::out | std::ofstream::trunc); //limpia el contenido del fichero
+        key_output_par.clear();
+    }
     
-    time_t rawtime; 
-    struct tm* info; 
-    time(&rawtime);
-    info = localtime(&rawtime);
-    string pathaux = "_" + to_string(info->tm_hour) + "_" + to_string(info->tm_min) + "_" + to_string(info->tm_sec) + "__"  + to_string(info->tm_year+1900) +  "-" + to_string(info->tm_mon) + "-" + to_string(info->tm_mday)  ;
-
-    key_output_seq.open("./output/keys/keys_output_seq" + pathaux + ".txt", std::ofstream::out | std::ofstream::trunc); //limpia el contenido del fichero
-    key_output_par.open("./output/keys/keys_output_par" + pathaux + ".txt", std::ofstream::out | std::ofstream::trunc); //limpia el contenido del fichero
-    key_output_seq.clear();
-    key_output_par.clear();
 }
 
 
@@ -65,12 +65,12 @@ void Controller::Sequential(){
         resSeq = res.at(0);
 
         r = new Repair(res.at(0), &key_output_par);
-        //while(r->Compressible()){
+        while(r->Compressible()){
             r->cambiar();
             resSeq = r->getSeq();
-            //if(r!=NULL) delete(r);
-            //r = new Repair(resSeq, &key_output_par);
-        //}
+            if(r!=NULL) delete(r);
+            r = new Repair(resSeq, &key_output_par);
+        }
         if(r!=NULL) delete(r);
     }
     else{
@@ -151,3 +151,4 @@ void Controller::mergeDList(DList* a, DList* b){
 DList* Controller::getSeq(){
     return resSeq;
 }
+

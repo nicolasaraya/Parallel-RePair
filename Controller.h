@@ -7,11 +7,9 @@
 #include "DList.h"
 #include "Repair.h"
 
-
-
 class Controller{
     public:
-        Controller(vector<int>*); 
+        Controller(vector<int>*, string, int); 
         ~Controller();
         void Sequential();
         void Parallel(int);

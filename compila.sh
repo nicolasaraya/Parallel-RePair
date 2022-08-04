@@ -1,1 +1,1 @@
-g++ *.cpp -g -O0 -fopenmp -lm -I ./DoubleLinkedList DoubleLinkedList/*.cpp  -I ./Heap Heap/*.cpp -I ./Other Other/*.hpp -I ./Repair Repair/*.cpp -o exec.out
+g++ *.cpp -g -O0 -fopenmp -std=c++11 -lm -I ./DoubleLinkedList DoubleLinkedList/*.cpp  -I ./Heap Heap/*.cpp -I ./Other Other/*.hpp -I ./Repair Repair/*.cpp -o exec.out

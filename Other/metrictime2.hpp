@@ -3,8 +3,8 @@
 
 #include <iostream>
 #include <cstdint>
-
 #include <chrono>
+
 
 #define TIMERSTART(label)                                                  \
         std::chrono::time_point<std::chrono::high_resolution_clock> a##label, b##label; \
