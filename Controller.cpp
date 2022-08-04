@@ -5,7 +5,6 @@ using namespace std;
 Controller::Controller(vector<int>* datos, string info, int option){
     this->datos = datos;
     seqSize = datos->size();
-   
     string pathaux = info; 
     if(option == 0){
         key_output_seq.open("./output/keys/keys_seq" + pathaux + ".txt", std::ofstream::out | std::ofstream::trunc); //limpia el contenido del fichero
@@ -65,11 +64,13 @@ void Controller::Sequential(){
         resSeq = res.at(0);
 
         r = new Repair(res.at(0), &key_output_par);
+        int count = 0;
         while(r->Compressible()){
             r->cambiar();
             resSeq = r->getSeq();
             if(r!=NULL) delete(r);
             r = new Repair(resSeq, &key_output_par);
+            cout << "ok "<< count++ << endl;
         }
         if(r!=NULL) delete(r);
     }
@@ -77,6 +78,7 @@ void Controller::Sequential(){
         Repair* r = new Repair(datos, &key_output_seq);
         r->cambiar();
         resSeq = r->getSeq();
+        delete(r);
         return; 
     }
 }
