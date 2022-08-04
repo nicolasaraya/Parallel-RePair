@@ -4,7 +4,7 @@
 
 using namespace std;
 
-const string file = "file.fna";  //para leer otro file editar esto. 
+const string file = "cat.fna";  //para leer otro file editar esto. 
 //A = 0
 //G = 6
 //C = 2
@@ -48,6 +48,7 @@ void readFile(int nThreads, int option){
 		d2 = contr->getSeq();
 		TIMERSTOP(PAR);
 		makeFile(d2, 1, pathaux);
+        delete(contr);
 	}
 	
 	if(option == 0 or option == 2){
@@ -57,6 +58,7 @@ void readFile(int nThreads, int option){
 		d1 = contr->getSeq();
 		TIMERSTOP(SEQ);
 		makeFile(d1, 0, pathaux);
+        delete(contr);
 	}
 
 	if(d1 != NULL) delete(d1);
@@ -82,6 +84,7 @@ void test(int nThreads, int option, long long int nDatos){
 		TIMERSTOP(SEQ);
 		if(d1 != NULL) d1->prints();
 		cout << endl;
+        delete(contr);
 	}
 
 	if(option == 1 or option == 2){
@@ -111,7 +114,7 @@ void makeFile(DList* d, int id, string pathaux){
 
 	Iterator it = d->begin();
 	while(it.hasNext()){
-		out << it.next()->getNum();
+		out << it.next()->getNum() << " ";
 	}
 
 	out.close();

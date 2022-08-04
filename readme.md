@@ -11,6 +11,4 @@ Decompress: `gzip -d ./input/cat.fna.gz`
 - `./exec.out N1 N2`, N1 = Number of Threads, N2 = Option
 - `./exec.out N1 N2 N3`, N1= Number of Threads, N2 = Option, N3 = Uniform array of N3 Elements 
 
-- Option :  0 -> Sequential
-            1 -> Parallel
-            2 -> Sequential and Parallel
+- Option :  0 -> Sequential // 1 -> Parallel // 2 -> Sequential and Parallel
