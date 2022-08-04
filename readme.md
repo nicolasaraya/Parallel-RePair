@@ -6,6 +6,7 @@ Download file in **input** folder: `wget -O ./input/cat.fna.gz https://ftp.ncbi.
 
 Decompress: `gzip -d ./input/cat.fna.gz`
 
+Crear directorios: `mkdir output/keys && mkdir output/compressed` 
 - `chmod +x compila.sh` 
 - `./compila.sh`
 - `./exec.out N1 N2`, N1 = Number of Threads, N2 = Option
